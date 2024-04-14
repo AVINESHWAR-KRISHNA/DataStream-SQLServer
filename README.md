@@ -45,7 +45,6 @@ json
 # Commands and Usage
 
 ## Bring Up Containers
-## bash
 
 docker-compose -f zookeeper-kafka.yml up -d
 
