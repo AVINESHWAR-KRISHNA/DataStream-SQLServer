@@ -45,25 +45,25 @@ json
 # Commands and Usage
 
 ## Bring Up Containers
-bash
+## bash
 
 docker-compose -f zookeeper-kafka.yml up -d
 
-# Create a topic
+## Create a topic
 kafka-topics --create --topic test-topic --bootstrap-server localhost:9092 --partitions 10 --replication-factor 1
 
-# List topics
+## List topics
 kafka-topics --list --bootstrap-server localhost:9092
 
-# Delete a topic
+## Delete a topic
 kafka-topics --delete --topic test-topic --bootstrap-server localhost:9092
-Debezium Configuration
-Post your Debezium connector configuration using:
 
-# bash
+## Debezium Configuration
+## Post your Debezium connector configuration using:
 
 curl -X POST -H "Content-Type: application/json" --data @config.json localhost:8083/connectors/
-Kafka Manager
+
+## Kafka Manager
 Use Kafka Manager to manage your Kafka cluster, topics, and consumers:
 
 Access via http://localhost:9000/
