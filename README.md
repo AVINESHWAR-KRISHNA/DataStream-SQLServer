@@ -73,11 +73,12 @@ Use Kafka Manager to manage your Kafka cluster, topics, and consumers:
 
 Access via http://localhost:9000/
 Zookeeper hosts: zookeeper:2181
-Customization
+
+# Customization
 
 Feel free to modify configurations, add more tables, or adjust Kafka settings to suit your requirements. Remember to adjust the consumer.py script to handle new schemas or tables.
 
 
-License
+# License
 
 This project is licensed under the MIT License - see the LICENSE.md file for details.
