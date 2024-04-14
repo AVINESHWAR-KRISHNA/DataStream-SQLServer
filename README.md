@@ -57,12 +57,12 @@ kafka-topics --list --bootstrap-server localhost:9092
 ## Delete a topic
 kafka-topics --delete --topic test-topic --bootstrap-server localhost:9092
 
-## Debezium Configuration
+# Debezium Configuration
 ## Post your Debezium connector configuration using:
 
 curl -X POST -H "Content-Type: application/json" --data @config.json localhost:8083/connectors/
 
-## Kafka Manager
+# Kafka Manager
 Use Kafka Manager to manage your Kafka cluster, topics, and consumers:
 
 Access via http://localhost:9000/
