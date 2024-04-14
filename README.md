@@ -5,7 +5,6 @@ DataStream-SQLServer provides real-time data streaming from SQL Server using Zoo
 # Table of Contents
 
 - Requirements
-- Setting Up
 - Commands and Usage
 - Managing Kafka Cluster
 - Customization
@@ -13,10 +12,9 @@ DataStream-SQLServer provides real-time data streaming from SQL Server using Zoo
 
 # Before you start, ensure you have the following installed:
 
-Docker
-Docker Compose
-Kafka Manager (optional)
-Setting Up
+- Docker Desktop
+- python
+- sql server
 
 # Enable CDC on SQL Server
 Run the SQL commands in commands/cdc-enable.sql to enable Change Data Capture (CDC) on your SQL Server database and table.
