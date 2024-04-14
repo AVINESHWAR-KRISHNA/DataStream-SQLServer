@@ -10,7 +10,6 @@ DataStream-SQLServer provides real-time data streaming from SQL Server using Zoo
 - Managing Kafka Cluster
 - Customization
 - License
-- Requirements
 
 # Before you start, ensure you have the following installed:
 
