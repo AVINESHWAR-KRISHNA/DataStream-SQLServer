@@ -44,12 +44,10 @@ json
 
 # Commands and Usage
 
-# Bring Up Containers
+## Bring Up Containers
 bash
 
 docker-compose -f zookeeper-kafka.yml up -d
-Kafka Topics and Management
-bash
 
 # Create a topic
 kafka-topics --create --topic test-topic --bootstrap-server localhost:9092 --partitions 10 --replication-factor 1
