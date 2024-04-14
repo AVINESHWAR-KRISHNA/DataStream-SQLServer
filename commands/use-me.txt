@@ -1,0 +1,27 @@
+# Bring up the containers in the background
+docker-compose -f zookeeper-kafka.yml up -d
+
+# List the running containers
+docker ps
+
+# Exec into the container running Kafka
+docker exec -it docker-workspace-kafka-1 bash
+
+# Create a topic called "test-topic" with 10 partitions and a replication factor of 1
+kafka-topics --create --topic test-topic --bootstrap-server localhost:9092 --partitions 10 --replication-factor 1
+
+# List the topics on the Kafka cluster
+kafka-topics --list --bootstrap-server localhost:9092
+
+# Delete the "test-topic" from the Kafka cluster
+kafka-topics --delete --topic test-topic --bootstrap-server localhost:9092
+
+# List the Docker networks
+docker network ls
+
+# Get the IP address of the container running Kafka
+docker inspect docker-workspace-kafka-1 | grep IPAddress
+
+# Post a Confluent Kafka Connect connector configuration to the Connect cluster
+# The configuration is read from config.json
+curl -X POST -H "Content-Type: application/json" --data @config.json localhost:8083/connectors/

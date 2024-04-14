@@ -1,0 +1,15 @@
+{
+    "name": "demo-db-cdc", 
+    "config": {
+        "connector.class": "io.debezium.connector.sqlserver.SqlServerConnector", 
+        "database.hostname": "demo-sql-server-01.database.windows.net", 
+        "database.port": "1433", 
+        "database.user": "avineshwar", 
+        "database.password": "Thisisstrongpassword24", 
+        "database.names": "demo-01", 
+        "topic.prefix": "sqlserver1-", 
+        "table.include.list": "dbo.customers", 
+        "schema.history.internal.kafka.bootstrap.servers": "kafka:9092", 
+        "schema.history.internal.kafka.topic": "schemahistory.fullfillment"
+    }
+}
