@@ -23,28 +23,29 @@ async def process_message(msg):
     try:
         _msg = json.loads(msg.value())
         
-        if _msg['payload']['op'] == 'c' and \
-           _msg['payload']['source']['schema'] == 'dbo' and \
-           _msg['payload']['source']['table'] == 'customers' and \
-           _msg['payload']['source']['db'] == 'demo-01':
-            
-            after_value = _msg['payload']['after']
-            db_value = _msg['payload']['source']['db']
-            table_value = _msg['payload']['source']['table']
-            schema_value = _msg['payload']['source']['schema']
+        payload = _msg.get('payload', {})
+        source = payload.get('source', {})
+        
+        # Unpack the payload and source dictionaries
+        op = payload.get('op')
+        schema = source.get('schema')
+        table = source.get('table')
+        db = source.get('db')
 
+        # Check conditions using dictionary unpacking
+        if op == 'c' and schema == 'dbo' and table == 'customers' and db == 'demo-01':
+            after_value = payload.get('after')
+            
             table = PrettyTable(['Key', 'Value'])
             table.add_row(['After', json.dumps(after_value)])
-            table.add_row(['DB', db_value])
-            table.add_row(['Table', table_value])
-            table.add_row(['Schema', schema_value])
+            table.add_row(['DB', db])
+            table.add_row(['Table', table])
+            table.add_row(['Schema', schema])
 
             print(table)
 
     except json.JSONDecodeError as e:
         print(f"Error decoding message: {e}")
-    except KeyError as e:
-        print(f"Key not found: {e}")
     except Exception as e:
         print(f"An error occurred: {e}")
 
