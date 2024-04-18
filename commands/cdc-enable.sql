@@ -7,11 +7,6 @@ EXEC sys.sp_cdc_enable_table
 @source_name = N'customers', 
 @role_name = NULL;
 
--- Verify CDC is enabled on the table
-SELECT * FROM cdc.change_tables;
-SELECT * FROM cdc.index_columns;
-SELECT * FROM [cdc].[cdc_jobs]
-
 
 
 -- Disable CDC on the table
