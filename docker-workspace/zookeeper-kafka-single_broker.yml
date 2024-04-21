@@ -2,7 +2,7 @@ version: "3.7"
 services:
 
   zookeeper:
-    image: confluentinc/cp-zookeeper:latest
+    image: confluentinc/cp-zookeeper:7.6.1
     restart: always
 
     environment:
@@ -15,7 +15,7 @@ services:
       - zookeeper-logs:/var/lib/zookeeper/log
 
   kafka:
-    image: confluentinc/cp-enterprise-kafka:latest
+    image: confluentinc/cp-enterprise-kafka:7.6.1
     restart: always
 
     depends_on:

@@ -1,8 +1,7 @@
-version: "3.7"
 services:
 
   zookeeper:
-    image: confluentinc/cp-zookeeper:latest
+    image: confluentinc/cp-zookeeper:7.6.1
     restart: always
 
     environment:
@@ -15,7 +14,7 @@ services:
       - zookeeper-logs:/var/lib/zookeeper/log
 
   kafka-1:
-    image: confluentinc/cp-enterprise-kafka:latest
+    image: confluentinc/cp-enterprise-kafka:7.6.1
     restart: always
 
     depends_on:
@@ -40,7 +39,7 @@ services:
       - kafka-data1:/var/lib/kafka/data
 
   kafka-2:
-    image: confluentinc/cp-enterprise-kafka:latest
+    image: confluentinc/cp-enterprise-kafka:7.6.1
     restart: always
 
     depends_on:
@@ -65,7 +64,7 @@ services:
       - kafka-data2:/var/lib/kafka/data
   
   kafka-3:
-    image: confluentinc/cp-enterprise-kafka:latest
+    image: confluentinc/cp-enterprise-kafka:7.6.1
     restart: always
 
     depends_on:
@@ -164,7 +163,25 @@ services:
       APPLICATION_SECRET: "random-secret"
 
     command: -Dpidfile.path=/dev/null
+  
+  debezium-ui:
+    image: debezium/debezium-ui:2.1.2.Final
+    restart: always
+
+    ports:
+      - 8080:8080
+
+    environment:
+      KAFKA_CONNECT_URIS: "http://debezium:8083"
+
+    depends_on:
+      - debezium
     
+    volumes:
+      - debezium-ui:/var/lib/debezium-ui/data
+
+    command: -c dbz.ui.cors.enable=true
+
 volumes:
   zookeeper-data:
   zookeeper-logs:
@@ -173,3 +190,4 @@ volumes:
   kafka-data3:
   debezium-data:
   schema-registry-data:
+  debezium-ui:

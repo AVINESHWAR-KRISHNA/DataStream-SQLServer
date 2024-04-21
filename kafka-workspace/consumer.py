@@ -4,57 +4,45 @@ from prettytable import PrettyTable
 
 # Kafka broker configuration
 conf = {
-    'bootstrap.servers': 'localhost:29092',
+    'bootstrap.servers': 'localhost:29091,localhost:29092,localhost:29093',
     'group.id': 'demo-consumer',
-    'auto.offset.reset': 'earliest'
+    'auto.offset.reset': 'earliest',
+    'enable.auto.commit': 'true'  # Disable auto commit
 }
 
 # Create Kafka consumer
 consumer = Consumer(conf)
 
-# Kafka topic to consume messages from
-topic = 'sqlserver1-.demo-01.dbo.customers'
+# Kafka topics to consume messages from
+topics = ['sqlserver1-.demo-01.dbo.customers', 'sqlserver1-.demo-02.dbo.demo_emp']
 
-# Subscribe to topic
-consumer.subscribe([topic])
+# Subscribe to topics
+consumer.subscribe(topics)
 
 try:
     while True:
         # Poll for messages
-        msg = consumer.poll(1.0)
+        msg = consumer.poll(1.0)  # Adjust the timeout as needed
         if msg is None:
             continue
         if msg.error():
-            print(f"Consumer error: {msg.error()}")
-        elif msg.value() is not None:
-            try:
-                _msg = json.loads(msg.value())
-                
-                #this sections needs to be modified as per the schema
-                if _msg['payload']['op'] == 'c' and \
-                   _msg['payload']['source']['schema'] == 'dbo' and \
-                   _msg['payload']['source']['table'] == 'customers' and \
-                   _msg['payload']['source']['db'] == 'demo-01':
-                    
-                    after_value = _msg['payload']['after']
-                    db_value = _msg['payload']['source']['db']
-                    table_value = _msg['payload']['source']['table']
-                    schema_value = _msg['payload']['source']['schema']
+            if msg.error().code() == KafkaError._PARTITION_EOF:
+                # End of partition event
+                print(f"Reached end of partition {msg.topic()} [{msg.partition()}]")
+            else:
+                # Other error
+                print(f"Error occurred: {msg.error().str()}")
+                continue
 
-                    table = PrettyTable(['Key', 'Value'])
-                    table.add_row(['After', json.dumps(after_value)])
-                    table.add_row(['DB', db_value])
-                    table.add_row(['Table', table_value])
-                    table.add_row(['Schema', schema_value])
+        # Decode message value if it's JSON
+        try:
+            value = msg.value().decode('utf-8')  # Assuming the message value is in utf-8 encoded bytes
+            value = json.loads(value)
+        except json.JSONDecodeError:
+            value = msg.value().decode('utf-8')  # If not JSON, decode the value
 
-                    print(table)
-
-            except json.JSONDecodeError as e:
-                print(f"Error decoding message: {e}")
-            except KeyError as e:
-                print(f"Key not found: {e}")
-            except Exception as e:
-                print(f"An error occurred: {e}")
+        # Print message details
+        print(f"Received message:\nKey: {msg.key()}\nValue: {value}\nPartition: {msg.partition()}")
 
 except KeyboardInterrupt:
     pass
